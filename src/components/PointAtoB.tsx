@@ -106,8 +106,17 @@ export default function PointAtoB({ setTrips, trips }: PointAtoBProps) {
       currentTrip.price > 0
     ) {
       setTrips((prev: Trip[]) => [...prev, currentTrip]);
-      setIsDropDownOpen(false);
-      setIsItemAdded(true);
+      setCurrentTrip({
+        id: nanoid(),
+        startAddr: "",
+        endAddr: "",
+        distance: 0,
+        duration: 0,
+        price: 0.0,
+        mpg: 40,
+        pricePerLitre: 1.45,
+        hourlyRate: 15,
+      });
     }
   }
 
@@ -218,19 +227,18 @@ export default function PointAtoB({ setTrips, trips }: PointAtoBProps) {
           className="form-input w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none bg-white  focus:ring-2 focus:ring-blue-500"
         />
       </div>
-      {!isItemAdded && (
-        <div className="flex flex-col gap-2 py-2">
-          <div className="add-item">
-            <button
-              className="flex items-center justify-center text-sm text-[#325CFF]"
-              onClick={(e) => handleAddTrip(e)}
-            >
-              <CirclePlus size={20} />
-              Add Item
-            </button>
-          </div>
+
+      <div className="flex flex-col gap-2 py-2">
+        <div className="add-item">
+          <button
+            className="flex items-center justify-center text-sm text-[#325CFF]"
+            onClick={(e) => handleAddTrip(e)}
+          >
+            <CirclePlus size={20} />
+            Add Item
+          </button>
         </div>
-      )}
+      </div>
     </>
   );
 }

@@ -44,14 +44,27 @@ export default function InvoiceDetailsDropdown({
       </div>
       {isMyDetailsOpen && (
         <div className="flex flex-col  justify-between text-gray-600 p-2 gap-2 ">
-          <label className="text-sm">Issued Date</label>
-          <input
-            {...register("issuedDate")}
-            type="text"
-            placeholder="19/20/20"
-            className=" p-2 border border-gray-200 rounded-xl"
-          />
-          <div className="flex flex-col gap-2">
+          <div className="flex gap-2">
+            <div className="flex flex-1 flex-col gap-2">
+              <label className="text-sm">Issued Date</label>
+              <input
+                {...register("dueDate")}
+                type="text"
+                placeholder="19/20/20"
+                className=" p-2 border border-gray-200 rounded-xl"
+              />
+            </div>
+            <div className="flex  flex-1 flex-col gap-2">
+              <label className="text-sm">Due Date</label>
+              <input
+                {...register("issuedDate")}
+                type="text"
+                placeholder="19/20/20"
+                className=" p-2 border border-gray-200 rounded-xl"
+              />
+            </div>
+          </div>
+          <div className="flex flex-col gap-2 ">
             {trips.map((trip, idx) => {
               return (
                 <div className=" bg-[#F5F7FB] rounded-xl items-container p-2 text-sm">
@@ -61,7 +74,9 @@ export default function InvoiceDetailsDropdown({
                 </div>
               );
             })}
-            <PointAtoB setTrips={setTrips} trips={trips} />
+            <div className=" bg-[#F5F7FB] rounded-xl items-container p-2 text-sm">
+              <PointAtoB setTrips={setTrips} trips={trips} />
+            </div>
           </div>
           <div className="flex flex-col gap-2 py-2">
             <div className="done">

@@ -25,7 +25,7 @@ const initalTrip: Trip = {
 
 export default function CreateInvoicePage() {
   const { register } = useForm<FormFields>();
-  const [trips, setTrips] = useState<Trip[]>([initalTrip]);
+  const [trips, setTrips] = useState<Trip[]>([]);
 
   return (
     <div className="main-container flex">
