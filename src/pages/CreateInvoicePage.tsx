@@ -28,11 +28,20 @@ export default function CreateInvoicePage() {
           </span>
         </div>
         <form className="pr-4 pt-4">
-          <div className="border border-gray-200 rounded-sm flex flex-col p-2 gap-2">
-            <div className="drop-down selector flex items-center justify-between text-gray-600">
+          <div className="border border-gray-200 rounded-sm flex flex-col ">
+            <div
+              className={`drop-down selector flex items-center justify-between text-gray-600 p-2 ${
+                isMyDetailsOpen && "border-b border-gray-200"
+              }`}
+            >
               <div>My Details</div>
+
               <button onClick={(e) => handleToggleDropdown(e)}>
-                {isMyDetailsOpen === false ? <ChevronDown /> : <ChevronUp />}
+                {isMyDetailsOpen === false ? (
+                  <ChevronDown size={20} />
+                ) : (
+                  <ChevronUp size={20} />
+                )}
               </button>
             </div>
             {isMyDetailsOpen && (
@@ -40,7 +49,7 @@ export default function CreateInvoicePage() {
                 {...register("email")}
                 type="text"
                 placeholder="Email"
-                className="px-2"
+                className="p-2"
               />
             )}
           </div>

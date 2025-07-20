@@ -1,3 +1,8 @@
+import { Feather } from "lucide-react";
 export default function AppSidebar() {
-  return <div>This</div>;
+  return (
+    <div>
+      <Feather size={40} />
+    </div>
+  );
 }

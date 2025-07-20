@@ -7,11 +7,11 @@ import CreateInvoicePage from "./pages/CreateInvoicePage";
 function App() {
   return (
     <div className="main-container flex font-inter">
-      <div className="flex sidebar-container bg-white border-r border-gray-200 h-screen">
+      <div className="flex sidebar-container bg-white border-r border-gray-200 h-screen p-2">
         <AppSidebar />
       </div>
-      <div className="main-area-container flex-1 flex flex-col">
-        <div className="header-container border-b border-gray-200">
+      <div className="main-area-container flex-1 flex flex-col ">
+        <div className="header-container border-b border-gray-200 p-2">
           <AppHeader />
         </div>
         <div className="content-container flex-1 p-4">
