@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { ChevronDown } from "lucide-react";
-import { ChevronUp } from "lucide-react";
+
 import PrintView from "../components/PrintView";
+import MyDetailsDropdown from "../components/InputForms/MyDetailsDropdown";
+import InvoiceDetailsDropdown from "../components/InputForms/InvoiceDetailsDropdown";
 
 type FormFields = {
   email: string;
@@ -11,12 +12,7 @@ type FormFields = {
 
 export default function CreateInvoicePage() {
   const { register } = useForm<FormFields>();
-  const [isMyDetailsOpen, setIsMyDetailsOpen] = useState<boolean>(false);
 
-  function handleToggleDropdown(e) {
-    e.preventDefault();
-    setIsMyDetailsOpen((prev) => !prev);
-  }
   return (
     <div className="main-container flex">
       <div className=" input-container flex-1 border-r border-gray-200 h-screen">
@@ -28,7 +24,7 @@ export default function CreateInvoicePage() {
           </span>
         </div>
         <form className="pr-4 pt-4">
-          <div className="border border-gray-200 rounded-sm flex flex-col ">
+          {/* <div className="border border-gray-200 rounded-sm flex flex-col ">
             <div
               className={`drop-down selector flex items-center justify-between text-gray-600 p-2 ${
                 isMyDetailsOpen && "border-b border-gray-200"
@@ -52,10 +48,16 @@ export default function CreateInvoicePage() {
                 className="p-2"
               />
             )}
+          </div> */}
+          <div className="pb-2">
+            <MyDetailsDropdown register={register} />
+          </div>
+          <div className="pb-2">
+            <InvoiceDetailsDropdown register={register} />
           </div>
         </form>
       </div>
-      <div className=" print-container bg-gray-100 flex-1 p-8">
+      <div className=" print-container bg-[#F5F7FB] flex-1 p-8">
         <PrintView />
       </div>
     </div>
