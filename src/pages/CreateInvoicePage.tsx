@@ -1,17 +1,31 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import type { Trip } from "../types/types";
 
 import PrintView from "../components/PrintView";
 import MyDetailsDropdown from "../components/InputForms/MyDetailsDropdown";
 import InvoiceDetailsDropdown from "../components/InputForms/InvoiceDetailsDropdown";
-
+import { nanoid } from "nanoid";
 type FormFields = {
   email: string;
   password: string;
 };
 
+const initalTrip: Trip = {
+  id: nanoid(),
+  startAddr: "",
+  endAddr: "",
+  distance: 0,
+  duration: 0,
+  price: 0.0,
+  mpg: 40,
+  pricePerLitre: 1.45,
+  hourlyRate: 15,
+};
+
 export default function CreateInvoicePage() {
   const { register } = useForm<FormFields>();
+  const [trips, setTrips] = useState<Trip[]>([initalTrip]);
 
   return (
     <div className="main-container flex">
@@ -53,7 +67,11 @@ export default function CreateInvoicePage() {
             <MyDetailsDropdown register={register} />
           </div>
           <div className="pb-2">
-            <InvoiceDetailsDropdown register={register} />
+            <InvoiceDetailsDropdown
+              register={register}
+              setTrips={setTrips}
+              trips={trips}
+            />
           </div>
         </form>
       </div>

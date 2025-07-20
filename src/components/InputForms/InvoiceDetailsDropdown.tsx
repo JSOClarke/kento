@@ -1,26 +1,25 @@
 import type { UseFormRegister } from "react-hook-form";
 import { useState } from "react";
 import type { FormFields } from "../../types/types";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, CirclePlus } from "lucide-react";
 import { ChevronUp } from "lucide-react";
 import PointAtoB from "../PointAtoB";
 import type { Trip } from "../../types/types";
+import ItemCard from "../ItemCard";
 type InvoiceDetailsDropdownProps = {
   register: UseFormRegister<FormFields>;
+  setTrips: () => void;
+  trips: Trip[];
+  setCurrentTrip: () => void;
+  currentTrip: Trip;
 };
 
 export default function InvoiceDetailsDropdown({
   register,
+  setTrips,
+  trips,
 }: InvoiceDetailsDropdownProps) {
   const [isMyDetailsOpen, setIsMyDetailsOpen] = useState<boolean>(false);
-  const [trips, setTrips] = useState<Trip[]>([]);
-  const [currentTrip, setCurrentTrip] = useState({
-    startAddr: "",
-    endAddr: "",
-    distance: 0,
-    duration: 0,
-    price: 0,
-  });
 
   function handleToggleDropdown(e) {
     e.preventDefault();
@@ -52,9 +51,24 @@ export default function InvoiceDetailsDropdown({
             placeholder="19/20/20"
             className=" p-2 border border-gray-200 rounded-xl"
           />
-          <div className=" bg-[#F5F7FB] rounded-xl items-container p-2 text-sm">
-            Item 1
-            <PointAtoB setTrips={setTrips} setCurrentTrip={setCurrentTrip} />
+          <div className="flex flex-col gap-2">
+            {trips.map((trip, idx) => {
+              return (
+                <div className=" bg-[#F5F7FB] rounded-xl items-container p-2 text-sm">
+                  {`Item ${idx + 1}`}
+                  <ItemCard trip={trip} />
+                  {/* <PointAtoB setTrips={setTrips} trips={trips} /> */}
+                </div>
+              );
+            })}
+            <PointAtoB setTrips={setTrips} trips={trips} />
+          </div>
+          <div className="flex flex-col gap-2 py-2">
+            <div className="done">
+              <button className="bg-[#325CFF] text-white rounded-xl px-4 py-2">
+                Done
+              </button>
+            </div>
           </div>
         </div>
       )}

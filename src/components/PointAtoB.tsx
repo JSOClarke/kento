@@ -4,10 +4,19 @@ import { nanoid } from "nanoid";
 import useFetchDistance from "../hooks/useFetchDistance";
 import useFetchJourney from "../hooks/useFetchJourney";
 import { calculateTripPricing } from "../utils/pricingUtils";
+import { CirclePlus } from "lucide-react";
 
-export default function PointAtoB() {
-  const [startAddr, setStartAddr] = useState<string>("");
-  const [endAddr, setEndAddr] = useState<string>("");
+type PointAtoBProps = {
+  register: UseFormRegister<FormFields>;
+  setTrips: React.Dispatch<React.SetStateAction<Trip[]>>;
+  trips: Trip[];
+  setCurrentTrip: React.Dispatch<React.SetStateAction<Trip>>;
+  currentTrip: Trip;
+};
+
+export default function PointAtoB({ setTrips, trips }: PointAtoBProps) {
+  const [isDropDownOpen, setIsDropDownOpen] = useState<boolean>(true);
+  const [isItemAdded, setIsItemAdded] = useState<boolean>(false);
   const [currentTrip, setCurrentTrip] = useState<Trip>({
     id: nanoid(),
     startAddr: "",
@@ -88,16 +97,30 @@ export default function PointAtoB() {
     currentTrip.hourlyRate,
   ]);
 
+  function handleAddTrip(e) {
+    e.preventDefault();
+    if (
+      currentTrip.startAddr &&
+      currentTrip.endAddr &&
+      currentTrip.distance > 0 &&
+      currentTrip.price > 0
+    ) {
+      setTrips((prev: Trip[]) => [...prev, currentTrip]);
+      setIsDropDownOpen(false);
+      setIsItemAdded(true);
+    }
+  }
+
   return (
     <>
       <div className="postcode-input flex w-full justify-between gap-10">
         <div className="point-1-address-container flex-1">
-          <label className="field-label block text-sm font-medium text-gray-700 mb-1">
-            Point 1 Address/Postcode
+          <label className="field-label block text-sm text-gray-700 mb-1">
+            Point 1 Address
           </label>
           <input
             type="text"
-            className="form-input w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="form-input w-full px-3 py-2 border bg-white border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="TW45ND"
             value={currentTrip.startAddr}
             onChange={(e) =>
@@ -107,8 +130,8 @@ export default function PointAtoB() {
         </div>
 
         <div className="point-1-address-container flex-1">
-          <label className="field-label block text-sm font-medium text-gray-700 mb-1">
-            Point 2 Address/Postcode
+          <label className="field-label block text-sm  text-gray-700 mb-1">
+            Point 2 Address
           </label>
           <input
             type="text"
@@ -116,62 +139,72 @@ export default function PointAtoB() {
             onChange={(e) =>
               setCurrentTrip((prev) => ({ ...prev, endAddr: e.target.value }))
             }
-            className="form-input w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="form-input w-full px-3 py-2 border bg-white  border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="0L99XP"
           />
         </div>
       </div>
-      <div className="calculator-inputs flex flex-col">
-        <label className="field-label block text-sm font-medium text-gray-700 mb-1">
-          MPG
-        </label>
-        <input
-          type="number"
-          value={currentTrip.mpg}
-          onChange={(e) =>
-            setCurrentTrip((prev) => ({ ...prev, mpg: Number(e.target.value) }))
-          }
-          className="form-input w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          placeholder="0L99XP"
-        />
-        <label className="field-label block text-sm font-medium text-gray-700 mb-1">
-          Price Per Litre
-        </label>
-        <input
-          type="number"
-          value={currentTrip.pricePerLitre}
-          onChange={(e) =>
-            setCurrentTrip((prev) => ({
-              ...prev,
-              pricePerLitre: Number(e.target.value),
-            }))
-          }
-          className="form-input w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          placeholder="0L99XP"
-        />
-        <label className="field-label block text-sm font-medium text-gray-700 mb-1">
-          Hourly Rate
-        </label>
-        <input
-          type="number"
-          value={currentTrip.hourlyRate}
-          onChange={(e) =>
-            setCurrentTrip((prev) => ({
-              ...prev,
-              hourlyRate: Number(e.target.value),
-            }))
-          }
-          className="form-input w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          placeholder="0L99XP"
-        />
-      </div>
-      <div className="generate-distance-button ">
-        <button
-          onClick={(e) => handleGenerateClick(e)}
-          className="mt-3 w-full bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-md"
-        >
-          Generate Approximate Distance Calculation
-        </button>
+      {isDropDownOpen && (
+        <>
+          <div className="calculator-inputs flex flex-col">
+            <label className="field-label block text-sm  text-gray-700 mb-1">
+              MPG
+            </label>
+            <input
+              type="number"
+              value={currentTrip.mpg}
+              onChange={(e) =>
+                setCurrentTrip((prev) => ({
+                  ...prev,
+                  mpg: Number(e.target.value),
+                }))
+              }
+              className="form-input w-full px-3 py-2 border  bg-white border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="0L99XP"
+            />
+            <label className="field-label block text-sm  text-gray-700 mb-1">
+              Price Per Litre
+            </label>
+            <input
+              type="number"
+              value={currentTrip.pricePerLitre}
+              onChange={(e) =>
+                setCurrentTrip((prev) => ({
+                  ...prev,
+                  pricePerLitre: Number(e.target.value),
+                }))
+              }
+              className="form-input w-full px-3 py-2 border border-gray-300 bg-white  rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="0L99XP"
+            />
+            <label className="field-label block text-sm text-gray-700 mb-1">
+              Hourly Rate
+            </label>
+            <input
+              type="number"
+              value={currentTrip.hourlyRate}
+              onChange={(e) =>
+                setCurrentTrip((prev) => ({
+                  ...prev,
+                  hourlyRate: Number(e.target.value),
+                }))
+              }
+              className="form-input w-full px-3 py-2 border border-gray-300 rounded-md bg-white  focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="0L99XP"
+            />
+          </div>
+          <div className="generate-distance-button ">
+            <button
+              onClick={(e) => handleGenerateClick(e)}
+              className="mt-3 w-full bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-md"
+            >
+              Generate Approximate Calculation
+            </button>
+          </div>
+        </>
+      )}
+
+      <div>
         <label>Estimated Amount</label>
         <input
           type="number"
@@ -182,9 +215,22 @@ export default function PointAtoB() {
               price: Number(e.target.value),
             }))
           }
-          className="form-input w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="form-input w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none bg-white  focus:ring-2 focus:ring-blue-500"
         />
       </div>
+      {!isItemAdded && (
+        <div className="flex flex-col gap-2 py-2">
+          <div className="add-item">
+            <button
+              className="flex items-center justify-center text-sm text-[#325CFF]"
+              onClick={(e) => handleAddTrip(e)}
+            >
+              <CirclePlus size={20} />
+              Add Item
+            </button>
+          </div>
+        </div>
+      )}
     </>
   );
 }
