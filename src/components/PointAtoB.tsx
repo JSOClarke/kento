@@ -108,7 +108,7 @@ export default function PointAtoB({ setTrips, trips }: PointAtoBProps) {
       setTrips((prev: Trip[]) => [...prev, currentTrip]);
       setCurrentTrip({
         id: nanoid(),
-        startAddr: "",
+        startAddr: currentTrip.endAddr,
         endAddr: "",
         distance: 0,
         duration: 0,
